@@ -40,8 +40,6 @@ class EmployeeManager:
 		self.main_window.setupUi(self.window)
 
 		self.tm = table_manager(self.main_window.employeeTables)
-		self.tm.set_column_count(3)
-		self.tm.set_row_count(0)
 
 		for employee in self.employees:
 			self.tm.add_row(employee)

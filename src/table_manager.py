@@ -1,9 +1,16 @@
-from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget
+from PyQt5.QtWidgets import QTableWidgetItem, QTableWidget, QHeaderView
 
 
 class table_manager():
 	def __init__(self, table):
 		self.table = table
+		self.set_column_count(3)
+		self.set_row_count(0)
+		self.table.setHorizontalHeaderItem(0, QTableWidgetItem('Full name'))
+		self.table.setHorizontalHeaderItem(1, QTableWidgetItem('Position'))
+		self.table.setHorizontalHeaderItem(2, QTableWidgetItem('Hourly pay'))
+
+		self.table.horizontalHeader().setSectionResizeMode(QHeaderView.Stretch)
 
 	def set_column_count(self, count):
 		self.table.setColumnCount(count)
