@@ -1,14 +1,26 @@
 import sys
 from PyQt5.QtWidgets import QApplication, QMainWindow, QInputDialog, QWidget, QStackedWidget
+from models import *
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker
+
 from ui.main_window import Ui_MainWindow as Main_window
 from ui.new_employee_window import Ui_MainWindow as New_employee_window
 from table_manager import table_manager
 
 class EmployeeManager:
 	def __init__(self):
+		self.engine = create_engine('sqlite:///employee_manager.db')
+		Base.metadata.create_all(self.engine)
+		DBSession = sessionmaker(bind=self.engine)
+		self.session = DBSession()
+
+		self.employees = []
+		for employee in self.session.query(Employee).all():
+			self.employees.append((employee.fullname, employee.position, employee.pay))
+
 		self.app = QApplication(sys.argv)
 		self.window = QMainWindow()
-		self.employees = []
 
 		self.main_window = Main_window()
 		self.new_employee_window = New_employee_window()
@@ -25,6 +37,11 @@ class EmployeeManager:
 
 		if name != '' and position != '' and pay != '':
 			self.employees.append((name, position, pay))
+			self.session.add(Employee(
+				fullname=name,
+				position=position,
+				pay=pay))
+			self.session.commit()
 			self.focus_main()
 
 		else:
