@@ -15,9 +15,9 @@ class EmployeeManager:
 		DBSession = sessionmaker(bind=self.engine)
 		self.session = DBSession()
 
-		self.employees = []
+		self.employees = {}
 		for employee in self.session.query(Employee).all():
-			self.employees.append((employee.fullname, employee.position, employee.pay))
+			self.employees[employee.id] = (employee.fullname, employee.position, employee.pay, str(employee.id))
 
 		self.app = QApplication(sys.argv)
 		self.window = QMainWindow()
@@ -36,11 +36,26 @@ class EmployeeManager:
 		pay = self.new_employee_window.pay.text()
 
 		if name != '' and position != '' and pay != '':
-			self.employees.append((name, position, pay))
-			self.session.add(Employee(
-				fullname=name,
-				position=position,
-				pay=pay))
+			new_employee = Employee(fullname=name, position=position, pay=pay)
+			self.employees[str(new_employee.id)] = (new_employee.fullname, new_employee.position, new_employee.pay, str(new_employee.id))
+			self.session.add(new_employee)
+			self.session.commit()
+			self.focus_main()
+
+		else:
+			pass
+
+	def edit_employee(self):
+		name = self.new_employee_window.fullName.text()
+		position = self.new_employee_window.position.text()
+		pay = self.new_employee_window.pay.text()
+
+		if name != '' and position != '' and pay != '':
+			employee = self.session.query(Employee).filter_by(id=self.info[3]).first()
+			employee.fullname = name
+			employee.position = position
+			employee.pay = pay
+			self.employees[employee.id] = (employee.fullname, employee.position, employee.pay, str(employee.id))
 			self.session.commit()
 			self.focus_main()
 
@@ -53,14 +68,28 @@ class EmployeeManager:
 		self.new_employee_window.cancel.clicked.connect(self.focus_main)
 		self.new_employee_window.addEmployee.clicked.connect(self.add_employee)
 
+	def focus_edit_employee(self):
+		info = [i.text() for i in self.tm.table.selectedItems()]
+		self.new_employee_window.setupUi(self.window)
+
+		self.new_employee_window.fullName.setText(info[0])
+		self.new_employee_window.position.setText(info[1])
+		self.new_employee_window.pay.setText(info[2])
+		self.info = info
+
+		self.new_employee_window.cancel.clicked.connect(self.focus_main)
+		self.new_employee_window.addEmployee.setText('Edit Employee')
+		self.new_employee_window.addEmployee.clicked.connect(self.edit_employee)
+
 	def focus_main(self):
 		self.main_window.setupUi(self.window)
 
 		self.tm = table_manager(self.main_window.employeeTables)
 
-		for employee in self.employees:
-			self.tm.add_row(employee)
+		for key, val in self.employees.items():
+			self.tm.add_row(val)
 			
 		self.main_window.addEmployeeDialog.clicked.connect(self.focus_new_employee)
+		self.tm.table.clicked.connect(self.focus_edit_employee)
 
 EmployeeManager()
