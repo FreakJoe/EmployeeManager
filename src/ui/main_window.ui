@@ -2,6 +2,9 @@
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QMainWindow" name="MainWindow">
+  <property name="enabled">
+   <bool>true</bool>
+  </property>
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -12,6 +15,87 @@
   </property>
   <property name="windowTitle">
    <string>Employee manager</string>
+  </property>
+  <property name="styleSheet">
+   <string notr="true">QMainWindow {
+	background-color: #FFF;
+	font: 13pt &quot;Roboto Condensed&quot;;
+}
+
+QLabel {
+	font: 13pt &quot;Roboto Condensed&quot;;
+}
+
+QTableWidget {
+	text-align: left;
+	font: 13pt &quot;Roboto Condensed&quot;;
+	color: rgba(0, 0, 0, 0.84);
+	border: 0;
+}
+
+QTableView QTableCornerButton::section {
+	background-color: #FFF;
+	border: 0;
+}
+
+QHeaderView::section {
+	text-align: left;
+	font: 12pt &quot;Roboto Condensed&quot;;
+	font-style: normal;
+	font-weight: normal;
+	color: rgba(0, 0, 0, 0.54);
+	background-color: #FFF;
+	border: 0;
+}
+
+QHeaderView::section:hover, QHeaderView::section:focus, QHeaderView::section:checked {
+	text-align: left;
+	font: 0;
+	font: 12pt &quot;Roboto Condensed&quot;;
+	color: rgba(0, 0, 0, 0.94);
+	font-style: normal;
+	font-weight: normal;
+}
+
+QTableWidget::item {
+	border: #000 1px solid;
+}
+
+QTableWidget::item:selected {
+	background-color: #EEEEEE;
+	color: rgba(0, 0, 0, 0.84);
+	border: 0;
+}
+
+QTableWidget::item:hover {
+	background-color: #EEEEEE;
+	color: rgba(0, 0, 0, 0.84);
+}
+
+QPushButton {
+	font: 14pt &quot;Roboto Condensed&quot;;
+	text-transform: uppercase;
+    border-radius: 2px;
+	height: 36px;
+	padding-left: 16px;
+	padding-right: 16px;
+	min-width: 88px;
+	background-color: #2196F3;
+	color: #000000;
+}
+
+QPushButton:Hover {
+	background-color: #1E88E5;
+}
+
+QPushButton:Pressed {
+	background-color: #1976D2;
+}
+
+QPushButton:Disabled {
+	color: rgba(0, 0, 0, 0.4);
+	background-color: rgba(0, 0, 0, 0.12);
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <layout class="QGridLayout" name="gridLayout">
@@ -30,6 +114,9 @@
     </item>
     <item row="3" column="1">
      <widget class="QPushButton" name="addEmployeeDialog">
+      <property name="enabled">
+       <bool>true</bool>
+      </property>
       <property name="text">
        <string>Add Employee</string>
       </property>

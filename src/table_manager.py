@@ -8,6 +8,9 @@ class table_manager():
 		self.set_row_count(0)		
 		self.table.setEditTriggers(QAbstractItemView.EditTriggers(0)) # Disable editing
 		self.table.setSelectionBehavior(QAbstractItemView.SelectRows)
+		self.table.verticalHeader().setHighlightSections(False)
+		self.table.horizontalHeader().setHighlightSections(False)
+		self.table.setShowGrid(False)
 		self.table.setHorizontalHeaderItem(0, QTableWidgetItem('Full name'))
 		self.table.setHorizontalHeaderItem(1, QTableWidgetItem('Position'))
 		self.table.setHorizontalHeaderItem(2, QTableWidgetItem('Hourly pay'))
